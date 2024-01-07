@@ -1,9 +1,5 @@
 # Тестування працездатності системи
 
-## Початкове наповнення 
-
-![Database](../assets/images/db.png)
-
 ## POST
 
 #### Запит
@@ -30,9 +26,7 @@
 
 ![Post Request](./photo_2024-01-07_19-36-15.jpg)
 
-#### Результат
 
-![Post result](../assets/images/putres.png)
 
 ## DELETE
 
@@ -40,6 +34,3 @@
 
 ![Post Request](./photo_2024-01-07_19-36-04.jpg)
 
-#### Результат
-
-![Post result](../assets/images/delres.png)
