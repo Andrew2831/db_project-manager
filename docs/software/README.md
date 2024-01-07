@@ -319,86 +319,62 @@ COMMIT;
 
 ## RESTfull сервіс для управління даними
 
-### Головний файл index.js
+### User Controler
+```package com.lab06.projectmanagement.controller;
 
-```js
-import express from 'express';
-import mysql from 'mysql';
-import cors from 'cors';
+import com.lab06.projectmanagement.entity.User;
+import com.lab06.projectmanagement.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+import java.util.List;
 
-app.listen(8080, () => {
-	console.log(`Connected on the port 8080 ~ http://localhost:8080/`);
-});
-```
+@RestController
+@RequestMapping("/users")
+public class UserController {
+    private final UserService userService;
 
-### Підключення до бази данних
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-```js
-const db = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: '',
-	database: 'mydb',
-});
-```
+    @PostMapping("/add")
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        User addedUser = userService.addUser(user);
+        return new ResponseEntity<>(addedUser, HttpStatus.CREATED);
+    }
 
-### Роутер
+    @GetMapping("/all")
+    public ResponseEntity<List<User>> getUsers() {
+        List<User> users = userService.getUsers();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
 
-```js
-app.get('/', (req, res) => {
-	res.json('Connected to backend');
-});
+    @GetMapping("/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        User user = userService.getUserByEmail(email);
+        return user != null
+                ? new ResponseEntity<>(user, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
-app.get('/users', (req, res) => {
-	const q = 'SELECT * FROM user';
-	db.query(q, (err, data) => {
-		if (err) return res.json(err);
-		return res.json(data);
-	});
-});
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
+        boolean deleted = userService.deleteUserById(id);
+        return deleted
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
-app.get('/users/:id', (req, res) => {
-	const id = req.params.id;
-	const q = 'SELECT * FROM user WHERE id = ?';
-
-	db.query(q, [id], (err, data) => {
-		if (err) return res.json(err);
-		return res.json(data);
-	});
-});
-
-app.post('/users', (req, res) => {
-	const q = 'INSERT INTO user (`id`, `nickname`, `email`, `password`, `isBlocked`) VALUES (?)';
-	const values = [null, req.body.nickname, req.body.email, req.body.password, req.body.isBlocked];
-	db.query(q, [values], (err, data) => {
-		if (err) return res.json(err);
-		return res.json('User registred successfuly');
-	});
-});
-
-app.delete('/users/:id', (req, res) => {
-	const id = req.params.id;
-	const q = 'DELETE FROM user WHERE id = ?';
-
-	db.query(q, [id], (err, data) => {
-		if (err) return res.json(err);
-		return res.json('User deleted successfuly');
-	});
-});
-
-app.put('/users/:id', (req, res) => {
-	const id = req.params.id;
-	const q = 'UPDATE user SET `nickname`= ?, `email`= ?, `password`= ?, `isBlocked`= ? WHERE id = ?';
-
-	const values = [req.body.nickname, req.body.email, req.body.password, req.body.isBlocked];
-
-	db.query(q, [...values, id], (err, data) => {
-		if (err) return res.send(err);
-		return res.json('Updated successfuly');
-	});
-});
+    @PutMapping("/update/{id}")
+    public ResponseEntity<User> updateUserById(@PathVariable Long id, @RequestBody User user) {
+        User updatedUser = userService.updateUserById(id, user);
+        return updatedUser != null
+                ? new ResponseEntity<>(updatedUser, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+}
 ```

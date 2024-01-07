@@ -9,7 +9,7 @@ footer: "ECL 2.0 Licensed | Copyright© 2023 Kiril Yakymchuk"
 
 **Виконали:** 
 
-*студент 2-го курсу, групи (IM-24)*<span padding-right:5em></span> **Якимчук Кіріл [[stbestich@gmail.com](), [@stbestichhh_shh]()]**
+*студент 2-го курсу, групи (IM-24)*<span padding-right:5em></span> **Тарасюк Андрій [[andriytara283@gmail.com](), [@Andrew283]()]**
 
 
 **Керівник**

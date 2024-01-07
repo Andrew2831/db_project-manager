@@ -3,7 +3,7 @@
   "version": "2.1.0",
   "main": "index.js",
   "description": "Databases labs",
-  "repository": "https://github.com/stbestichhh/db_project-manager",
+  "repository": "https://github.com/Andrew2831/db_project-manager",
   "author": "Kiril Yakymchuk <stbestich@gmail.com>",
   "license": "ECL 2.0",
   "scripts": {
